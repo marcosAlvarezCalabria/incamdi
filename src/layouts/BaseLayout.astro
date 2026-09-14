@@ -11,6 +11,9 @@ interface Props {
   description?: string;
   descriptionEn?: string;
   noindex?: boolean;
+  spanishPath?: string;
+  englishPath?: string;
+  service?: { name: string; description: string };
 }
 
 const {
@@ -19,6 +22,9 @@ const {
   description: descriptionProp,
   descriptionEn,
   noindex = false,
+  spanishPath = '/',
+  englishPath = '/en/',
+  service,
 } = Astro.props;
 
 const pageLanguage: 'es' | 'en' = Astro.url.pathname.startsWith('/en') ? 'en' : 'es';
@@ -30,8 +36,8 @@ const englishDescription = descriptionEn ?? (descriptionProp ? descriptionProp :
 const title = pageLanguage === 'en' ? englishTitle : spanishTitle;
 const description = pageLanguage === 'en' ? englishDescription : spanishDescription;
 const canonical = new URL(Astro.url.pathname, siteConfig.url);
-const spanishUrl = new URL('/', siteConfig.url);
-const englishUrl = new URL('/en/', siteConfig.url);
+const spanishUrl = new URL(spanishPath, siteConfig.url);
+const englishUrl = new URL(englishPath, siteConfig.url);
 const ogImage = new URL('/assets/images/og-incamdi.png', siteConfig.url);
 const logoImage = new URL('/assets/images/logo-incamdi-192.webp', siteConfig.url);
 const isLandingPage = /^\/(?:en\/?)?$/.test(Astro.url.pathname);
@@ -135,6 +141,17 @@ const structuredData = {
         : 'Web a medida y sistema de reservas integrado para estudios de tatuaje.',
       creator: { '@id': businessId },
     },
+    ...(service ? [{
+      '@type': 'Service',
+      '@id': `${canonical.href}#service`,
+      name: service.name,
+      description: service.description,
+      url: canonical.href,
+      provider: { '@id': businessId },
+      areaServed: ['Ireland', 'Spain'],
+      inLanguage: languageTag,
+      mainEntityOfPage: { '@id': `${canonical.href}#webpage` },
+    }] : []),
   ],
 };
 ---

@@ -1,0 +1,118 @@
+---
+/*
+THESIS: cada servicio se entiende como un sistema que se diagnostica, construye y verifica, no como una lista de promesas.
+OWN-WORLD: papel técnico blanco, piezas mecanizadas, líneas finas y una única señal ember.
+STORY: el visitante reconoce su problema, entiende el proceso, ve una prueba real y abre una conversación.
+FIRST VIEWPORT: promesa y CTA a la izquierda; una gran máquina visual propia del servicio a la derecha.
+FORM: mesa de diagnóstico, sexta estructura explorada; recorrido por problema, proceso, entregables y prueba.
+*/
+import '@/styles/service-pages.css';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Header from '@/components/Header.astro';
+import Contact from '@/components/Contact.astro';
+import Footer from '@/components/Footer.astro';
+import Icon from '@/components/ui/Icon.astro';
+import { serviceHref, servicePages, type ServicePage } from '@/domain/service-pages';
+import { siteConfig } from '@/config/site';
+
+interface Props {
+  service: ServicePage;
+  language: 'es' | 'en';
+}
+
+const { service, language } = Astro.props;
+const copy = <T extends { es: string; en: string }>(value: T) => value[language];
+const isEnglish = language === 'en';
+const spanishHref = serviceHref(service, 'es');
+const englishHref = serviceHref(service, 'en');
+const homeHref = isEnglish ? '/en/' : '/';
+const relatedServices = servicePages.filter((item) => item.key !== service.key);
+---
+
+<BaseLayout
+  title={copy(service.title)}
+  description={copy(service.description)}
+  spanishPath={spanishHref}
+  englishPath={englishHref}
+  service={{ name: copy(service.shortTitle), description: copy(service.description) }}
+>
+  <Header spanishHref={spanishHref} englishHref={englishHref} />
+  <main id="contenido" class="service-page">
+    <section class="service-hero" aria-labelledby="service-title">
+      <div class="service-hero__glow" aria-hidden="true"></div>
+      <div class="wrap">
+        <nav class="breadcrumb" aria-label={isEnglish ? 'Breadcrumb' : 'Migas de pan'}>
+          <a href={homeHref}>{isEnglish ? 'Home' : 'Inicio'}</a><span aria-hidden="true">/</span>
+          <a href={`${homeHref}#servicios`}>{isEnglish ? 'Services' : 'Servicios'}</a><span aria-hidden="true">/</span>
+          <span aria-current="page">{copy(service.shortTitle)}</span>
+        </nav>
+        <div class="service-hero__grid">
+          <div class="service-hero__copy">
+            <div class="eyebrow"><span class="dot" aria-hidden="true"></span>{copy(service.eyebrow)}</div>
+            <h1 id="service-title">{copy(service.headline)}</h1>
+            <p>{copy(service.lead)}</p>
+            <div class="cta-row">
+              <a class="btn btn-primary" href={siteConfig.bookingUrl} target="_blank" rel="noopener noreferrer" data-track={`booking-service-${service.key}`}>
+                <Icon name="calendar" size={18} />{isEnglish ? 'Tell me about your project' : 'Cuéntame tu proyecto'}
+              </a>
+              <a class="btn btn-ghost" href="#proceso">{isEnglish ? 'See the process' : 'Ver el proceso'}<Icon name="arrow" size={17} /></a>
+            </div>
+          </div>
+          <figure class="service-hero__visual">
+            <img src={service.image.src} alt={copy(service.image.alt)} width="1600" height="900" loading="eager" fetchpriority="high" />
+            <figcaption><span>{isEnglish ? 'Incamdi workshop' : 'Taller Incamdi'}</span><span>{copy(service.shortTitle)}</span></figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="diagnostic" aria-labelledby="diagnostic-title">
+      <div class="wrap">
+        <div class="diagnostic__head rv"><h2 id="diagnostic-title">{copy(service.diagnosticTitle)}</h2><p>{copy(service.diagnosticIntro)}</p></div>
+        <ol class="diagnostic__list">
+          {service.diagnostics.map((item, index) => <li class="rv"><span aria-hidden="true">{String(index + 1).padStart(2, '0')}</span><p>{copy(item)}</p></li>)}
+        </ol>
+      </div>
+    </section>
+
+    <section class="process" id="proceso" aria-labelledby="process-title">
+      <div class="wrap process__grid">
+        <div class="process__intro rv">
+          <p class="kicker">{isEnglish ? 'Working method' : 'Método de trabajo'}</p>
+          <h2 id="process-title">{copy(service.processTitle)}</h2><p>{copy(service.processIntro)}</p>
+        </div>
+        <ol class="process__steps">
+          {service.process.map((step, index) => (
+            <li class="rv"><div class="process__marker" aria-hidden="true"><span>{String(index + 1).padStart(2, '0')}</span></div>
+              <div><h3>{copy(step.title)}</h3><p>{copy(step.description)}</p></div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <section class="output" aria-labelledby="output-title">
+      <div class="wrap"><div class="output__panel rv">
+        <div class="output__main">
+          <p class="kicker">{isEnglish ? 'The result' : 'El resultado'}</p><h2 id="output-title">{copy(service.deliverablesTitle)}</h2>
+          <ul>{service.deliverables.map((item) => <li><Icon name="check" size={18} /><span>{copy(item)}</span></li>)}</ul>
+        </div>
+        <aside class="output__proof" aria-labelledby="proof-title">
+          <div class="output__signal" aria-hidden="true"></div><h3 id="proof-title">{copy(service.proofTitle)}</h3><p>{copy(service.proof)}</p>
+        </aside>
+      </div></div>
+    </section>
+
+    <section class="service-next" aria-labelledby="next-title">
+      <div class="wrap">
+        <div class="service-next__head"><h2 id="next-title">{isEnglish ? 'The rest of the workshop' : 'El resto del taller'}</h2><a href={`${homeHref}#servicios`}>{isEnglish ? 'View all services' : 'Ver todos los servicios'}</a></div>
+        <div class="service-next__links">
+          {relatedServices.map((item) => <a href={serviceHref(item, language)}><Icon name={item.icon} size={20} /><span>{copy(item.shortTitle)}</span><Icon name="arrow" size={16} /></a>)}
+        </div>
+      </div>
+    </section>
+    <Contact />
+  </main>
+  <Footer />
+  <script>import '@/scripts/main';</script>
+</BaseLayout>

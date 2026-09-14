@@ -5,14 +5,15 @@ import Bilingual from './ui/Bilingual.astro';
 import Logo from './ui/Logo.astro';
 
 const isEnglish = Astro.url.pathname.startsWith('/en');
+const homePath = isEnglish ? '/en/' : '/';
 ---
 
 <footer>
   <div class="foot-in">
-    <Logo compact />
+    <Logo compact href={homePath} />
     <nav class="foot-links" aria-label={isEnglish ? 'Footer navigation' : 'Navegación del pie'}>
-      {navItems.map((item) => <Bilingual tag="a" href={item.href} es={item.label.es} en={item.label.en} />)}
-      <Bilingual tag="a" href="#contacto" es="Contacto" en="Contact" />
+      {navItems.map((item) => <Bilingual tag="a" href={`${homePath}${item.href}`} es={item.label.es} en={item.label.en} />)}
+      <Bilingual tag="a" href={`${homePath}#contacto`} es="Contacto" en="Contact" />
     </nav>
     <Bilingual
       tag="p"

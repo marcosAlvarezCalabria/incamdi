@@ -4,20 +4,27 @@ import { siteConfig } from '@/config/site';
 import Bilingual from './ui/Bilingual.astro';
 import Logo from './ui/Logo.astro';
 
+interface Props {
+  spanishHref?: string;
+  englishHref?: string;
+}
+
 const isEnglish = Astro.url.pathname.startsWith('/en');
+const { spanishHref = '/', englishHref = '/en/' } = Astro.props;
+const homePath = isEnglish ? '/en/' : '/';
 ---
 
 <header class="site-header" data-header>
   <nav class="nav-in" aria-label={isEnglish ? 'Main navigation' : 'Navegación principal'}>
-    <Logo />
+    <Logo href={homePath} />
     <div class="nav-right">
       <div class="nav-links">
-        {navItems.map((item) => <Bilingual tag="a" href={item.href} es={item.label.es} en={item.label.en} />)}
+        {navItems.map((item) => <Bilingual tag="a" href={`${homePath}${item.href}`} es={item.label.es} en={item.label.en} />)}
       </div>
       <div class="lang" role="group" aria-label={isEnglish ? 'Language' : 'Idioma'}>
         <a
           class:list={['lang-opt', { active: !isEnglish }]}
-          href="/"
+          href={spanishHref}
           lang="es"
           hreflang="es"
           rel="alternate"
@@ -25,7 +32,7 @@ const isEnglish = Astro.url.pathname.startsWith('/en');
         >ES</a>
         <a
           class:list={['lang-opt', { active: isEnglish }]}
-          href="/en/"
+          href={englishHref}
           lang="en"
           hreflang="en"
           rel="alternate"
@@ -57,7 +64,7 @@ const isEnglish = Astro.url.pathname.startsWith('/en');
     <div class="mobile-menu__inner">
       <nav class="mobile-menu__links" aria-label={isEnglish ? 'Mobile navigation' : 'Navegación móvil'}>
         {navItems.map((item, index) => (
-          <Bilingual tag="a" href={item.href} es={item.label.es} en={item.label.en} data-menu-link style={`--menu-index:${index}`} />
+          <Bilingual tag="a" href={`${homePath}${item.href}`} es={item.label.es} en={item.label.en} data-menu-link style={`--menu-index:${index}`} />
         ))}
       </nav>
       <a
