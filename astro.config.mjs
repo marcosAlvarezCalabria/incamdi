@@ -6,7 +6,11 @@ const site = process.env.PUBLIC_SITE_URL || 'https://incamdi.com';
 export default defineConfig({
   site,
   output: 'static',
-  integrations: [sitemap()],
+  integrations: [
+    sitemap({
+      filter: (page) => !page.endsWith('/pilot-chat/'),
+    }),
+  ],
   build: {
     assets: 'assets',
     inlineStylesheets: 'always',
