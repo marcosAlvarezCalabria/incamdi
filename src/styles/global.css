@@ -160,6 +160,7 @@ h2.title,.title{max-width:17ch;font-family:'Space Grotesk',sans-serif;font-size:
 .ink-logo img{display:block;width:100%;height:auto;filter:drop-shadow(0 16px 22px rgb(17 17 20 / 22%)) drop-shadow(0 6px 14px rgb(255 106 26 / 12%))}
 .ink-logo-window.is-floating{animation:inkendar-window-float 7.2s ease-in-out infinite;will-change:transform}
 .ink-logo-window.is-floating .ink-logo{animation:inkendar-inner-float 7.2s ease-in-out infinite;will-change:transform}
+.ink-status{display:inline-flex;align-items:center;margin:0 0 14px;border:1px solid rgb(255 138 61 / 34%);border-radius:999px;background:rgb(255 106 26 / 10%);color:var(--accent-2);font-size:11px;font-weight:700;letter-spacing:.1em;line-height:1.2;padding:8px 11px;text-transform:uppercase}
 .ink-card h2{max-width:18ch;margin-bottom:16px;color:#fff;font-family:'Space Grotesk',sans-serif;font-size:clamp(1.75rem,3.6vw,2.5rem);font-weight:700;letter-spacing:-.03em;line-height:1.08;text-wrap:balance}
 .ink-card h2 em{color:var(--accent-2);font-style:normal}
 .ink-copy>p{max-width:48ch;color:rgb(255 255 255 / 66%);font-size:16.5px;text-wrap:pretty}
