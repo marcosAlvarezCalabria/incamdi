@@ -4,6 +4,7 @@ import Bilingual from './ui/Bilingual.astro';
 import Icon from './ui/Icon.astro';
 
 const isEnglish = Astro.url.pathname.startsWith('/en');
+const caseStudiesPath = isEnglish ? '/en/case-studies/' : '/casos-de-exito/';
 ---
 
 <section id="casos" aria-labelledby="cases-title">
@@ -98,5 +99,11 @@ const isEnglish = Astro.url.pathname.startsWith('/en');
       es="Y más proyectos: <b>Koko Atelier</b>, <b>CineHub</b> (SPA de cine con JWT) y <b>ConoXchange</b> (marketplace P2P de skills)."
       en="And more projects: <b>Koko Atelier</b>, <b>CineHub</b> (movie SPA with JWT) and <b>ConoXchange</b> (P2P skills marketplace)."
     />
+    <div class="cases-all rv">
+      <a class="btn btn-ghost" href={caseStudiesPath}>
+        <Bilingual es="Ver todos los proyectos" en="Explore all projects" />
+        <Icon name="arrow" size={17} />
+      </a>
+    </div>
   </div>
 </section>

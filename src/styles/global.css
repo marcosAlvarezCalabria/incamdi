@@ -131,6 +131,7 @@ h2.title,.title{max-width:17ch;font-family:'Space Grotesk',sans-serif;font-size:
 .case-agent__node--primary{border-color:rgb(255 138 61 / 70%);background:var(--accent);box-shadow:0 8px 20px -8px rgb(255 106 26 / 78%)}
 .case-agent__arrow{color:var(--accent-2);font-size:17px}
 .case-agent__label{max-width:28ch;color:#fff;font-size:12.5px;font-weight:600;line-height:1.35;text-align:center}
+.cases-all{display:flex;justify-content:center;margin-top:28px}
 .case__body{display:flex;flex:1;flex-direction:column;gap:14px;padding:24px}
 .card-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px}
 .ic{display:grid;place-items:center;width:46px;height:46px;border:1px solid rgb(255 106 26 / 24%);border-radius:13px;background:var(--ember);color:var(--accent-deep)}

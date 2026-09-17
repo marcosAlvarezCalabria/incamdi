@@ -1,0 +1,97 @@
+---
+/*
+THESIS: Los casos se leen como un archivo de evidencias y no como una cuadrícula comercial de promesas intercambiables.
+OWN-WORLD: papel blanco, rejilla técnica, tinta casi negra y una sola marca ember; índice de archivo y capturas reales a gran escala.
+STORY: la persona identifica los proyectos, inspecciona el trabajo real y termina hablando directamente con Marcos.
+FIRST VIEWPORT: título dominante a la izquierda, explicación breve a la derecha y el índice del archivo asomando bajo el pliegue.
+FORM: séptima estructura asignada, archivo editorial con índice fijo y expedientes verticales; seed 292a3d0b.
+*/
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Header from '@/components/Header.astro';
+import Footer from '@/components/Footer.astro';
+import Icon from '@/components/ui/Icon.astro';
+import { siteConfig } from '@/config/site';
+import { caseStudies, caseStudyRoutes } from '@/domain/case-studies';
+import '@/styles/case-studies.css';
+
+const isEnglish = Astro.url.pathname.startsWith('/en');
+const language = isEnglish ? 'en' : 'es';
+const homePath = isEnglish ? '/en/' : '/';
+---
+
+<BaseLayout
+  title="Casos de éxito de desarrollo web y software | Incamdi"
+  titleEn="Web development and software case studies | Incamdi"
+  description="Proyectos reales de desarrollo web, software a medida y aplicaciones construidos por Incamdi."
+  descriptionEn="Real custom web development, software and application projects built by Incamdi."
+  spanishPath={caseStudyRoutes.es}
+  englishPath={caseStudyRoutes.en}
+  includeInkendarSchema={false}
+>
+  <Header spanishHref={caseStudyRoutes.es} englishHref={caseStudyRoutes.en} />
+  <main id="contenido" class="work-page">
+    <section class="work-hero" aria-labelledby="work-title">
+      <div class="wrap">
+        <a class="work-back" href={`${homePath}#casos`}>
+          <span aria-hidden="true">←</span>
+          {isEnglish ? 'Back to Incamdi' : 'Volver a Incamdi'}
+        </a>
+        <div class="work-hero__grid">
+          <div>
+            <p class="work-kicker">{isEnglish ? 'Real work' : 'Trabajo real'}</p>
+            <h1 id="work-title">{isEnglish ? 'Proof lives in the product.' : 'La prueba está en el producto.'}</h1>
+          </div>
+          <div class="work-hero__intro">
+            <p>{isEnglish ? 'Real interfaces from websites, software and applications I have designed and built. No stock mockups and no invented results.' : 'Interfaces reales de webs, software y aplicaciones que he diseñado y construido. Sin mockups de stock ni resultados inventados.'}</p>
+            <span>{isEnglish ? 'Five projects · Real screenshots' : 'Cinco proyectos · Capturas reales'}</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="work-archive" aria-label={isEnglish ? 'Project archive' : 'Archivo de proyectos'}>
+      <div class="wrap work-archive__layout">
+        <aside class="work-index">
+          <p>{isEnglish ? 'Archive' : 'Archivo'}</p>
+          <ol>
+            {caseStudies.map((project, index) => (
+              <li><a href={`#${project.slug}`}><span>{String(index + 1).padStart(2, '0')}</span>{project.name}</a></li>
+            ))}
+          </ol>
+        </aside>
+
+        <div class="work-list">
+          {caseStudies.map((project, index) => (
+            <article class="work-case" id={project.slug}>
+              <header class="work-case__header">
+                <div class="work-case__number">{String(index + 1).padStart(2, '0')}</div>
+                <div><p class="work-case__kind">{project.kind[language]}</p><h2>{project.name}</h2></div>
+                <span class="work-case__status"><i aria-hidden="true"></i>{project.status[language]}</span>
+              </header>
+              <figure class="work-case__media">
+                <picture>
+                  <source media="(max-width: 720px)" srcset={project.image.srcSmall} />
+                  <img src={project.image.src} width={project.image.width} height={project.image.height} alt={project.image.alt[language]} loading={index === 0 ? 'eager' : 'lazy'} fetchpriority={index === 0 ? 'high' : 'auto'} decoding="async" />
+                </picture>
+                <figcaption>{isEnglish ? 'Real project capture' : 'Captura real del proyecto'}</figcaption>
+              </figure>
+              <div class="work-case__copy">
+                <p class="work-case__summary">{project.summary[language]}</p>
+                <div><p>{project.detail[language]}</p><ul aria-label={isEnglish ? 'Project characteristics' : 'Características del proyecto'}>{project.tags.map((tag) => <li>{tag[language]}</li>)}</ul></div>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="work-close" aria-labelledby="work-close-title">
+      <div class="wrap work-close__inner">
+        <div><p>{isEnglish ? 'Your project can be next' : 'Tu proyecto puede ser el siguiente'}</p><h2 id="work-close-title">{isEnglish ? 'Let’s build something real.' : 'Construyamos algo real.'}</h2></div>
+        <a class="btn btn-primary" href={siteConfig.bookingUrl} target="_blank" rel="noopener noreferrer" data-track="case-studies-booking">{isEnglish ? 'Tell me about your project' : 'Cuéntame tu proyecto'}<Icon name="arrow" size={17} /></a>
+      </div>
+    </section>
+  </main>
+  <Footer />
+  <script>import '@/scripts/main';</script>
+</BaseLayout>

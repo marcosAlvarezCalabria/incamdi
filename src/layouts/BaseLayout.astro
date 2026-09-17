@@ -14,6 +14,7 @@ interface Props {
   spanishPath?: string;
   englishPath?: string;
   service?: { name: string; description: string };
+  includeInkendarSchema?: boolean;
 }
 
 const {
@@ -25,6 +26,7 @@ const {
   spanishPath = '/',
   englishPath = '/en/',
   service,
+  includeInkendarSchema = true,
 } = Astro.props;
 
 const pageLanguage: 'es' | 'en' = Astro.url.pathname.startsWith('/en') ? 'en' : 'es';
@@ -129,7 +131,7 @@ const structuredData = {
       sameAs: profileUrls,
       knowsAbout: ['Full-stack development', 'Technical SEO', 'SaaS', 'AI agents', 'Automation'],
     },
-    {
+    ...(includeInkendarSchema ? [{
       '@type': 'SoftwareApplication',
       '@id': `${siteConfig.url}/#inkendar`,
       name: 'Inkendar',
@@ -140,7 +142,7 @@ const structuredData = {
         ? 'Custom website and integrated booking system for tattoo studios.'
         : 'Web a medida y sistema de reservas integrado para estudios de tatuaje.',
       creator: { '@id': businessId },
-    },
+    }] : []),
     ...(service ? [{
       '@type': 'Service',
       '@id': `${canonical.href}#service`,
