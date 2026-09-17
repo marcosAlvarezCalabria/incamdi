@@ -7,7 +7,7 @@ const envContactEmail = import.meta.env.PUBLIC_CONTACT_EMAIL?.trim();
 export const siteConfig = {
   name: 'Incamdi',
   url: (envSiteUrl || provisionalSiteUrl).replace(/\/$/, ''),
-  email: envContactEmail || undefined,
+  email: envContactEmail || 'info@incamdi.com',
   phone: '+34687414574',
   bookingUrl: whatsappBookingUrl,
   bookingIsExternal: true,

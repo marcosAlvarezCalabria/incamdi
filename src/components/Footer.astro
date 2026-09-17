@@ -6,6 +6,8 @@ import Logo from './ui/Logo.astro';
 
 const isEnglish = Astro.url.pathname.startsWith('/en');
 const homePath = isEnglish ? '/en/' : '/';
+const privacyPath = isEnglish ? '/en/privacy/' : '/privacidad/';
+const cookiesPath = isEnglish ? '/en/cookies/' : '/cookies/';
 ---
 
 <footer>
@@ -14,6 +16,13 @@ const homePath = isEnglish ? '/en/' : '/';
     <nav class="foot-links" aria-label={isEnglish ? 'Footer navigation' : 'Navegación del pie'}>
       {navItems.map((item) => <Bilingual tag="a" href={`${homePath}${item.href}`} es={item.label.es} en={item.label.en} />)}
       <Bilingual tag="a" href={`${homePath}#contacto`} es="Contacto" en="Contact" />
+    </nav>
+    <nav class="foot-legal" aria-label={isEnglish ? 'Legal information' : 'Información legal'}>
+      <a href={privacyPath}>{isEnglish ? 'Privacy' : 'Privacidad'}</a>
+      <a href={cookiesPath}>Cookies</a>
+      <button class="foot-cookie-settings" type="button" data-cookie-settings>
+        {isEnglish ? 'Cookie settings' : 'Configurar cookies'}
+      </button>
     </nav>
     <Bilingual
       tag="p"

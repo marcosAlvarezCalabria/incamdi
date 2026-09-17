@@ -1,44 +1,151 @@
+---
+import '@/styles/cookie-consent.css';
+
+const isEnglish = Astro.url.pathname.startsWith('/en');
+const cookiePolicyPath = isEnglish ? '/en/cookies/' : '/cookies/';
+---
+
+<aside
+  class="cookie-consent"
+  data-cookie-consent
+  aria-labelledby="cookie-consent-title"
+  aria-live="polite"
+  hidden
+>
+  <p class="cookie-consent__label">{isEnglish ? 'Privacy choice' : 'Preferencias de privacidad'}</p>
+  <h2 id="cookie-consent-title">{isEnglish ? 'You decide whether to enable chat' : 'Tú decides si activas el chat'}</h2>
+  <p>
+    {isEnglish
+      ? 'The website uses local storage to remember your choice. Chatwoot loads only if you allow its functional cookie.'
+      : 'La web usa almacenamiento local para recordar tu elección. Chatwoot solo se carga si permites su cookie funcional.'}
+  </p>
+  <a class="cookie-consent__link" href={cookiePolicyPath}>
+    {isEnglish ? 'Read the cookie policy' : 'Leer la política de cookies'}
+  </a>
+  <div class="cookie-consent__actions">
+    <button class="btn btn-ghost" type="button" data-cookie-essential>
+      {isEnglish ? 'Necessary only' : 'Solo necesarias'}
+    </button>
+    <button class="btn btn-primary" type="button" data-cookie-chat>
+      {isEnglish ? 'Enable chat' : 'Permitir chat'}
+    </button>
+  </div>
+</aside>
+
 <script is:inline>
-  var chatwootLocale = document.documentElement.lang.startsWith('en') ? 'en' : 'es';
-  var chatwootCopy = chatwootLocale === 'en'
-    ? {
-        launcherTitle: 'Chat with me',
-        welcomeTitle: "Let's talk",
-        welcomeDescription: 'Available Monday to Friday, 08:00–20:00 (Ireland time).',
-        availableMessage: 'I usually reply within a few minutes.',
-        unavailableMessage: 'I am currently offline. Leave me a message and I will reply on the next business day.'
+  (function () {
+    var storageKey = 'incamdi-cookie-consent-v1';
+    var panel = document.querySelector('[data-cookie-consent]');
+    var essentialButton = document.querySelector('[data-cookie-essential]');
+    var chatButton = document.querySelector('[data-cookie-chat]');
+    var chatLoaded = false;
+
+    function getConsent() {
+      try {
+        return window.localStorage.getItem(storageKey);
+      } catch (error) {
+        return null;
       }
-    : {
-        launcherTitle: 'Chatea conmigo',
-        welcomeTitle: '¿Hablamos?',
-        welcomeDescription: 'Disponible de lunes a viernes, de 08:00 a 20:00 (hora de Irlanda).',
-        availableMessage: 'Normalmente respondo en unos minutos.',
-        unavailableMessage: 'Ahora estoy fuera de horario. Déjame tu mensaje y te responderé el próximo día laborable.'
+    }
+
+    function saveConsent(value) {
+      try {
+        window.localStorage.setItem(storageKey, value);
+      } catch (error) {
+        // The choice still applies for the current page when storage is unavailable.
+      }
+    }
+
+    function showPanel() {
+      if (panel) panel.hidden = false;
+    }
+
+    function hidePanel() {
+      if (panel) panel.hidden = true;
+    }
+
+    function clearChatCookies() {
+      document.cookie.split(';').forEach(function (entry) {
+        var name = entry.split('=')[0].trim();
+        if (name.indexOf('cw_') === 0) {
+          document.cookie = name + '=; Max-Age=0; path=/; SameSite=Lax';
+        }
+      });
+    }
+
+    function loadChatwoot() {
+      if (chatLoaded || document.querySelector('script[data-chatwoot-sdk]')) return;
+      chatLoaded = true;
+
+      var locale = document.documentElement.lang.startsWith('en') ? 'en' : 'es';
+      var copy = locale === 'en'
+        ? {
+            launcherTitle: 'Chat with me',
+            welcomeTitle: "Let's talk",
+            welcomeDescription: 'Available Monday to Friday, 08:00–20:00 (Ireland time).',
+            availableMessage: 'I usually reply within a few minutes.',
+            unavailableMessage: 'I am currently offline. Leave me a message and I will reply on the next business day.'
+          }
+        : {
+            launcherTitle: 'Chatea conmigo',
+            welcomeTitle: '¿Hablamos?',
+            welcomeDescription: 'Disponible de lunes a viernes, de 08:00 a 20:00 (hora de Irlanda).',
+            availableMessage: 'Normalmente respondo en unos minutos.',
+            unavailableMessage: 'Ahora estoy fuera de horario. Déjame tu mensaje y te responderé el próximo día laborable.'
+          };
+
+      window.chatwootSettings = {
+        position: 'right',
+        type: 'expanded_bubble',
+        launcherTitle: copy.launcherTitle,
+        locale: locale,
+        useBrowserLanguage: false,
+        welcomeTitle: copy.welcomeTitle,
+        welcomeDescription: copy.welcomeDescription,
+        availableMessage: copy.availableMessage,
+        unavailableMessage: copy.unavailableMessage
       };
 
-  window.chatwootSettings = {
-    "position":"right",
-    "type":"expanded_bubble",
-    "launcherTitle":chatwootCopy.launcherTitle,
-    "locale":chatwootLocale,
-    "useBrowserLanguage":false,
-    "welcomeTitle":chatwootCopy.welcomeTitle,
-    "welcomeDescription":chatwootCopy.welcomeDescription,
-    "availableMessage":chatwootCopy.availableMessage,
-    "unavailableMessage":chatwootCopy.unavailableMessage
-  };
-
-  (function(d,t) {
-    var BASE_URL="https://app.chatwoot.com";
-    var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
-    g.src=BASE_URL+"/packs/js/sdk.js";
-    g.async = true;
-    s.parentNode.insertBefore(g,s);
-    g.onload=function(){
-      window.chatwootSDK.run({
-        websiteToken: '3BgXchocHU4Kw5UyRrnU4VDg',
-        baseUrl: BASE_URL
-      })
+      var baseUrl = 'https://app.chatwoot.com';
+      var script = document.createElement('script');
+      script.src = baseUrl + '/packs/js/sdk.js';
+      script.async = true;
+      script.dataset.chatwootSdk = 'true';
+      script.onload = function () {
+        window.chatwootSDK.run({
+          websiteToken: '3BgXchocHU4Kw5UyRrnU4VDg',
+          baseUrl: baseUrl
+        });
+      };
+      document.head.appendChild(script);
     }
-  })(document,"script");
+
+    if (getConsent() === 'chat') {
+      loadChatwoot();
+    } else if (getConsent() !== 'essential') {
+      showPanel();
+    }
+
+    if (chatButton) {
+      chatButton.addEventListener('click', function () {
+        saveConsent('chat');
+        hidePanel();
+        loadChatwoot();
+      });
+    }
+
+    if (essentialButton) {
+      essentialButton.addEventListener('click', function () {
+        var previousConsent = getConsent();
+        saveConsent('essential');
+        clearChatCookies();
+        hidePanel();
+        if (previousConsent === 'chat') window.location.reload();
+      });
+    }
+
+    document.querySelectorAll('[data-cookie-settings]').forEach(function (button) {
+      button.addEventListener('click', showPanel);
+    });
+  })();
 </script>

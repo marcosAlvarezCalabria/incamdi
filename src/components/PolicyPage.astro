@@ -1,0 +1,104 @@
+---
+/*
+THESIS: La información legal se presenta como documentación legible, no como una pared de texto ni como una landing comercial.
+OWN-WORLD: papel blanco, rejilla técnica, tinta y marcadores ember del sistema Incamdi; navegación documental lateral.
+STORY: la persona identifica al responsable, entiende el tratamiento y encuentra rápidamente cómo decidir o ejercer sus derechos.
+FIRST VIEWPORT: cabecera compacta con categoría, título, resumen y fecha; el contenido comienza sin CTA comercial.
+FORM: superficie Read dentro del mundo visual existente, con índice persistente en escritorio y lectura lineal en móvil.
+*/
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Header from '@/components/Header.astro';
+import Footer from '@/components/Footer.astro';
+import { legalPageContent, legalRoutes, type LegalKind } from '@/domain/legal';
+import '@/styles/policies.css';
+
+interface Props {
+  kind: LegalKind;
+}
+
+const { kind } = Astro.props;
+const language = Astro.url.pathname.startsWith('/en') ? 'en' : 'es';
+const page = legalPageContent[kind][language];
+const spanishPage = legalPageContent[kind].es;
+const englishPage = legalPageContent[kind].en;
+const routes = legalRoutes[kind];
+const homePath = language === 'en' ? '/en/' : '/';
+---
+
+<BaseLayout
+  title={spanishPage.title}
+  titleEn={englishPage.title}
+  description={spanishPage.description}
+  descriptionEn={englishPage.description}
+  spanishPath={routes.es}
+  englishPath={routes.en}
+>
+  <Header spanishHref={routes.es} englishHref={routes.en} />
+  <main id="contenido" class="policy-page">
+    <div class="policy-wrap">
+      <a class="policy-back" href={homePath}>
+        <span aria-hidden="true">←</span>
+        {language === 'en' ? 'Back to Incamdi' : 'Volver a Incamdi'}
+      </a>
+
+      <header class="policy-header">
+        <p class="policy-eyebrow">{page.eyebrow}</p>
+        <h1>{page.heading}</h1>
+        <p class="policy-intro">{page.intro}</p>
+        <p class="policy-updated">{page.updated}</p>
+      </header>
+
+      <div class="policy-layout">
+        <nav class="policy-index" aria-label={language === 'en' ? 'On this page' : 'En esta página'}>
+          <p>{language === 'en' ? 'On this page' : 'En esta página'}</p>
+          <ol>
+            {page.sections.map((section) => (
+              <li><a href={`#${section.id}`}>{section.title}</a></li>
+            ))}
+          </ol>
+        </nav>
+
+        <article class="policy-content">
+          {page.sections.map((section) => (
+            <section id={section.id}>
+              <h2>{section.title}</h2>
+              {section.paragraphs?.map((paragraph) => <p>{paragraph}</p>)}
+              {section.bullets && (
+                <ul>
+                  {section.bullets.map((item) => <li>{item}</li>)}
+                </ul>
+              )}
+              {section.table && (
+                <div class="policy-table-wrap" tabindex="0" role="region" aria-label={section.title}>
+                  <table>
+                    <thead>
+                      <tr>{section.table.headers.map((header) => <th scope="col">{header}</th>)}</tr>
+                    </thead>
+                    <tbody>
+                      {section.table.rows.map((row) => (
+                        <tr>{row.map((cell) => <td>{cell}</td>)}</tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+              {section.links && (
+                <div class="policy-links">
+                  {section.links.map((link) => (
+                    <a href={link.href} target="_blank" rel="noopener noreferrer">
+                      {link.label}<span aria-hidden="true"> ↗</span>
+                    </a>
+                  ))}
+                </div>
+              )}
+            </section>
+          ))}
+        </article>
+      </div>
+    </div>
+  </main>
+  <Footer />
+  <script>
+    import '@/scripts/main';
+  </script>
+</BaseLayout>
