@@ -15,12 +15,12 @@ export const siteConfig = {
   locale: 'es_ES',
   alternateLocale: 'en_IE',
   title: {
-    es: 'Desarrollo web, SEO y automatización | Incamdi',
-    en: 'Web development, SEO and automation | Incamdi',
+    es: 'Agencia web y desarrollo a medida | Incamdi',
+    en: 'Web development agency in Galway | Incamdi',
   },
   description: {
-    es: 'Desarrollo web a medida, SEO técnico, software y automatizaciones con IA para negocios en España e Irlanda. Trabaja directamente con Marcos Álvarez.',
-    en: 'Custom websites, technical SEO, software and AI automation for businesses in Ireland and Spain. Work directly with Marcos Álvarez.',
+    es: 'Agencia web de desarrollo a medida, SEO técnico y automatizaciones con IA para empresas de España e Irlanda. Trabaja directamente con Marcos Álvarez.',
+    en: 'Web development agency in Galway for custom websites, technical SEO, software and AI automation. Work directly with Marcos Álvarez.',
   },
   social: {
     linkedin: 'https://www.linkedin.com/in/marcos-alvarez-calabria',
