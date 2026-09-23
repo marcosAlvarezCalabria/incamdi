@@ -3,11 +3,7 @@ export {};
 document.documentElement.classList.add('js');
 
 const pageIsEnglish = document.documentElement.lang === 'en';
-const heroVideoContainer = document.querySelector<HTMLElement>('[data-hero-video]');
 const heroVideo = document.querySelector<HTMLVideoElement>('[data-hero-video-media]');
-const heroVideoSource = document.querySelector<HTMLSourceElement>('[data-hero-video-source]');
-const heroVideoLoader = document.querySelector<HTMLButtonElement>('[data-hero-video-loader]');
-const heroVideoLoaderLabel = heroVideoLoader?.querySelector<HTMLElement>('.hero-video-loader__label');
 const heroVideoBookingLink = document.querySelector<HTMLAnchorElement>('[data-hero-video-booking]');
 const heroFireSlogan = document.querySelector<HTMLElement>('[data-hero-fire-title]');
 const embeddedCtaLeadTime = 3.1;
@@ -58,56 +54,35 @@ function syncHeroVideoBooking(): void {
   }
 }
 
-if (heroVideo && heroVideoSource && heroVideoLoader && heroVideoBookingLink) {
-  type HeroVideoState = 'idle' | 'loading' | 'error';
+if (heroVideo && heroVideoBookingLink) {
+  const reduceMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const connection = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection;
 
-  const setHeroVideoState = (state: HeroVideoState): void => {
-    const labels: Record<HeroVideoState, string> = {
-      idle: heroVideoLoader.dataset.labelReady ?? (pageIsEnglish ? 'Play video' : 'Reproducir vídeo'),
-      loading: heroVideoLoader.dataset.labelLoading ?? (pageIsEnglish ? 'Loading video' : 'Cargando vídeo'),
-      error: heroVideoLoader.dataset.labelError ?? (pageIsEnglish ? 'Try video again' : 'Reintentar vídeo'),
-    };
+  const applyVideoPreference = (): void => {
+    if (reduceMotionQuery.matches || connection?.saveData) {
+      heroVideo.pause();
+      syncHeroVideoBooking();
+      return;
+    }
 
-    heroVideoLoader.dataset.state = state;
-    heroVideoLoader.disabled = state === 'loading';
-    heroVideoLoader.setAttribute('aria-label', labels[state]);
-    if (heroVideoLoaderLabel) heroVideoLoaderLabel.textContent = labels[state];
-  };
-
-  const playHeroVideo = (): void => {
-    if (heroVideoLoader.dataset.state === 'loading') return;
-    const source = heroVideoSource.dataset.src;
-    if (!source) return;
-
-    setHeroVideoState('loading');
-    setHeroVideoBookingActive(false);
-
-    const handleCanPlay = (): void => {
-      heroVideo.removeEventListener('error', handleError);
-      heroVideo.play().then(() => {
-        heroVideoContainer?.classList.add('is-video-ready');
-        setHeroVideoState('idle');
-      }).catch(() => setHeroVideoState('error'));
-    };
-
-    const handleError = (): void => {
-      heroVideo.removeEventListener('canplay', handleCanPlay);
-      setHeroVideoState('error');
-    };
-
-    heroVideo.addEventListener('canplay', handleCanPlay, { once: true });
-    heroVideo.addEventListener('error', handleError, { once: true });
-    heroVideoSource.src = source;
-    heroVideo.load();
+    heroVideo.play().catch(() => {
+      heroVideo.pause();
+      syncHeroVideoBooking();
+    });
   };
 
   heroVideo.addEventListener('timeupdate', syncHeroVideoBooking);
   heroVideo.addEventListener('durationchange', syncHeroVideoBooking);
   heroVideo.addEventListener('ended', () => setHeroVideoBookingActive(true));
-  heroVideoLoader.addEventListener('click', playHeroVideo);
+  reduceMotionQuery.addEventListener('change', applyVideoPreference);
+  const scheduleVideoPlayback = (): void => {
+    const startPlayback = (): void => { window.setTimeout(applyVideoPreference, 800); };
+    if (document.readyState === 'complete') startPlayback();
+    else window.addEventListener('load', startPlayback, { once: true });
+  };
 
   setHeroVideoBookingActive(false);
-  setHeroVideoState('idle');
+  scheduleVideoPlayback();
 }
 
 const menuButton = document.querySelector<HTMLButtonElement>('.menu-toggle');
