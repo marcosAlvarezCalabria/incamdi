@@ -75,6 +75,7 @@ const heroSloganEn = fireSlogan(
 
     <div class="hero__visual" data-hero-video>
       <video
+        id="hero-video"
         class="hero__video"
         data-hero-video-media
         muted
@@ -84,9 +85,26 @@ const heroSloganEn = fireSlogan(
         aria-hidden="true"
         tabindex="-1"
       >
-        <source src="/assets/video/incamdi-hero.mp4" type="video/mp4" />
+        <source data-hero-video-source data-src="/assets/video/incamdi-hero.mp4" type="video/mp4" />
       </video>
       <div class="hero__video-scrim" aria-hidden="true"></div>
+      <button
+        class="hero-video-loader"
+        type="button"
+        data-hero-video-loader
+        data-label-ready={isEnglish ? 'Play video' : 'Reproducir vídeo'}
+        data-label-loading={isEnglish ? 'Loading video' : 'Cargando vídeo'}
+        data-label-error={isEnglish ? 'Try video again' : 'Reintentar vídeo'}
+        aria-controls="hero-video"
+      >
+        <span class="hero-video-loader__mark" aria-hidden="true">
+          <span class="hero-video-loader__flame"></span>
+          <span class="hero-video-loader__core"></span>
+        </span>
+        <span class="hero-video-loader__label" aria-live="polite">
+          <Bilingual es="Reproducir vídeo" en="Play video" />
+        </span>
+      </button>
       <a
         class="hero-video-link"
         data-hero-video-booking
