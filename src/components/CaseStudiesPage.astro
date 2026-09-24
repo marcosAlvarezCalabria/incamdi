@@ -43,7 +43,7 @@ const homePath = isEnglish ? '/en/' : '/';
           </div>
           <div class="work-hero__intro">
             <p>{isEnglish ? 'Real interfaces from websites, software and applications I have designed and built. No stock mockups and no invented results.' : 'Interfaces reales de webs, software y aplicaciones que he diseñado y construido. Sin mockups de stock ni resultados inventados.'}</p>
-            <span>{isEnglish ? 'Five projects · Real screenshots' : 'Cinco proyectos · Capturas reales'}</span>
+            <span>{isEnglish ? `${caseStudies.length} projects · Real screenshots` : `${caseStudies.length} proyectos · Capturas reales`}</span>
           </div>
         </div>
       </div>
@@ -68,12 +68,23 @@ const homePath = isEnglish ? '/en/' : '/';
                 <div><p class="work-case__kind">{project.kind[language]}</p><h2>{project.name}</h2></div>
                 <span class="work-case__status"><i aria-hidden="true"></i>{project.status[language]}</span>
               </header>
-              <figure class="work-case__media">
-                <picture>
-                  <source media="(max-width: 720px)" srcset={project.image.srcSmall} />
-                  <img src={project.image.src} width={project.image.width} height={project.image.height} alt={project.image.alt[language]} loading={index === 0 ? 'eager' : 'lazy'} fetchpriority={index === 0 ? 'high' : 'auto'} decoding="async" />
-                </picture>
-                <figcaption>{isEnglish ? 'Real project capture' : 'Captura real del proyecto'}</figcaption>
+              <figure class:list={['work-case__media', { 'work-case__media--gallery': 'secondaryImage' in project }]}>
+                {'secondaryImage' in project ? (
+                  <div class="work-case__gallery">
+                    {[project.image, project.secondaryImage].map((image) => (
+                      <picture class="work-case__shot">
+                        <source media="(max-width: 720px)" srcset={image.srcSmall} />
+                        <img src={image.src} width={image.width} height={image.height} alt={image.alt[language]} loading="lazy" decoding="async" />
+                      </picture>
+                    ))}
+                  </div>
+                ) : (
+                  <picture>
+                    <source media="(max-width: 720px)" srcset={project.image.srcSmall} />
+                    <img src={project.image.src} width={project.image.width} height={project.image.height} alt={project.image.alt[language]} loading={index === 0 ? 'eager' : 'lazy'} fetchpriority={index === 0 ? 'high' : 'auto'} decoding="async" />
+                  </picture>
+                )}
+                <figcaption>{'secondaryImage' in project ? (isEnglish ? 'Two real SaaS captures' : 'Dos capturas reales del SaaS') : (isEnglish ? 'Real project capture' : 'Captura real del proyecto')}</figcaption>
               </figure>
               <div class="work-case__copy">
                 <p class="work-case__summary">{project.summary[language]}</p>

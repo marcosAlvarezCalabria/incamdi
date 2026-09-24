@@ -69,7 +69,7 @@ La landing está publicada y lista para producción en `https://incamdi.com/`. E
 - [x] Peru Inkas Travel presentado con imagen, enlace público y vídeo.
 - [x] Inkendar presentado como producto de Incamdi dentro de una ventana visual integrada en la rejilla.
 - [x] Enlace público a la landing de Inkendar: `https://inkendar.netlify.app/`.
-- [x] Los casos secundarios Koko Atelier, CineHub y ConoXchange se mencionan sin inventar pruebas o métricas.
+- [x] Koko Atelier se presenta mediante dos casos reales: su SaaS móvil y la web del negocio.
 
 ### 3.5 Idiomas y accesibilidad terminados
 

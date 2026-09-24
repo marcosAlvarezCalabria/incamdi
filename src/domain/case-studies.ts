@@ -1,5 +1,13 @@
 import type { BilingualText } from './content';
 
+type CaseStudyImage = Readonly<{
+  src: string;
+  srcSmall: string;
+  width: number;
+  height: number;
+  alt: BilingualText;
+}>;
+
 type CaseStudy = Readonly<{
   slug: string;
   name: string;
@@ -8,7 +16,8 @@ type CaseStudy = Readonly<{
   summary: BilingualText;
   detail: BilingualText;
   tags: ReadonlyArray<BilingualText>;
-  image: Readonly<{ src: string; srcSmall: string; width: number; height: number; alt: BilingualText }>;
+  image: CaseStudyImage;
+  secondaryImage?: CaseStudyImage;
 }>;
 
 export const caseStudyRoutes = { es: '/casos-de-exito/', en: '/en/case-studies/' } as const;
@@ -33,13 +42,23 @@ export const caseStudies = [
     image: { src: '/assets/case-studies/peru-inkas-travel.webp', srcSmall: '/assets/case-studies/peru-inkas-travel-720.webp', width: 1600, height: 733, alt: { es: 'Portada real de Peru Inkas Travel con Machu Picchu entre las nubes.', en: 'Real Peru Inkas Travel homepage featuring Machu Picchu among the clouds.' } },
   },
   {
-    slug: 'koko-atelier', name: 'Koko Atelier',
+    slug: 'koko-atelier-saas', name: 'Koko Atelier SaaS',
+    kind: { es: 'Software a medida', en: 'Custom software' },
+    status: { es: 'Aplicación privada', en: 'Private application' },
+    summary: { es: 'SaaS móvil para gestionar la operativa diaria de un taller de arreglos.', en: 'Mobile SaaS for managing the daily operation of an alterations workshop.' },
+    detail: { es: 'Reúne pedidos, clientes, agenda, cobros y estadísticas en una interfaz bilingüe pensada para trabajar desde el móvil. Las capturas muestran el seguimiento de pedidos por estado y el panel de actividad y pagos.', en: 'It brings orders, clients, bookings, payments and reporting into a bilingual interface designed for mobile use. The captures show order tracking by status and the activity and payments dashboard.' },
+    tags: [{ es: 'SaaS', en: 'SaaS' }, { es: 'Pedidos', en: 'Orders' }, { es: 'Pagos', en: 'Payments' }, { es: 'Agenda', en: 'Bookings' }],
+    image: { src: '/assets/case-studies/koko-atelier-saas-orders.webp', srcSmall: '/assets/case-studies/koko-atelier-saas-orders-240.webp', width: 337, height: 747, alt: { es: 'Lista móvil de pedidos de Koko Atelier organizada por estado.', en: 'Koko Atelier mobile order list organised by status.' } },
+    secondaryImage: { src: '/assets/case-studies/koko-atelier-saas-stats.webp', srcSmall: '/assets/case-studies/koko-atelier-saas-stats-240.webp', width: 350, height: 760, alt: { es: 'Panel móvil de estadísticas, pagos y pedidos de Koko Atelier.', en: 'Koko Atelier mobile dashboard showing statistics, payments and orders.' } },
+  },
+  {
+    slug: 'koko-atelier-galway', name: 'Koko Atelier Galway',
     kind: { es: 'Web de negocio local', en: 'Local business website' },
     status: { es: 'Web real', en: 'Real website' },
     summary: { es: 'Web para un servicio de arreglos y confección en Galway.', en: 'Website for an alterations and tailoring service in Galway.' },
     detail: { es: 'Presenta los servicios, precios, horarios, trabajos y contacto del negocio con una apertura audiovisual ligada al oficio. La navegación conduce directamente a solicitar presupuesto.', en: 'It presents the business services, prices, hours, work and contact details through an audiovisual opening rooted in the craft. Navigation leads directly to requesting a quote.' },
     tags: [{ es: 'Negocio local', en: 'Local business' }, { es: 'Responsive', en: 'Responsive' }, { es: 'Conversión', en: 'Conversion' }],
-    image: { src: '/assets/case-studies/koko-atelier.webp', srcSmall: '/assets/case-studies/koko-atelier-720.webp', width: 1600, height: 721, alt: { es: 'Portada real de Koko Atelier Galway con una máquina de coser en funcionamiento.', en: 'Real Koko Atelier Galway homepage showing a sewing machine at work.' } },
+    image: { src: '/assets/case-studies/koko-atelier-galway.webp', srcSmall: '/assets/case-studies/koko-atelier-galway-720.webp', width: 1600, height: 720, alt: { es: 'Portada real de Koko Atelier Galway con una máquina de coser en funcionamiento.', en: 'Real Koko Atelier Galway homepage showing a sewing machine at work.' } },
   },
   {
     slug: 'cinehub', name: 'CineHub',
