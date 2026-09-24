@@ -111,20 +111,20 @@ export const projects = [
   {
     name: 'Epoxi',
     badgeClass: 'ai',
-    badge: { es: 'Agente como servicio', en: 'Agent as a Service' },
+    badge: { es: 'Agente como Servicio · AaaS', en: 'Agent as a Service · AaaS' },
     description: {
-      es: 'Agente propio creado sobre el núcleo Hermes y refinado con la información, los procesos y los permisos del cliente. Opera Epoxiron por Telegram y API: IA conectada a software real.',
-      en: "A proprietary agent built on the Hermes core and refined with the client's information, processes and permissions. It operates Epoxiron through Telegram and API: AI connected to real software.",
+      es: 'Agente como Servicio (AaaS) desarrollado con Google Gemini y un harness propio de orquestación. Adaptado a la información, los procesos y los permisos del cliente, opera Epoxiron mediante Telegram y API.',
+      en: "An Agent as a Service (AaaS) built with Google Gemini and a custom orchestration harness. Tailored to the client's information, processes and permissions, it operates Epoxiron through Telegram and API.",
     },
-    tags: ['AaaS', 'Hermes', 'Telegram', 'API'],
+    tags: ['AaaS', 'Google Gemini', 'Telegram', 'API'],
     visual: {
       src: '/assets/projects/epoxiron-delivery-notes.webp',
       srcSmall: '/assets/projects/epoxiron-delivery-notes-640.webp',
       width: 1200,
       height: 802,
       alt: {
-        es: 'Epoxi conecta el agente Hermes con el software a medida Epoxiron.',
-        en: 'Epoxi connects the Hermes agent with the custom Epoxiron software.',
+        es: 'Epoxi conecta Google Gemini y un harness propio con el software a medida Epoxiron.',
+        en: 'Epoxi connects Google Gemini and a custom harness with the Epoxiron software.',
       },
       variant: 'agent',
     },

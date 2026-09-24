@@ -324,8 +324,8 @@ export const servicePages = [
     ],
     proofTitle: { es: 'IA conectada a software real', en: 'AI connected to real software' },
     proof: {
-      es: 'Epoxi es un agente construido sobre Hermes que opera Epoxiron mediante Telegram y API, utilizando información, procesos y permisos del cliente.',
-      en: 'Epoxi is an agent built on Hermes that operates Epoxiron through Telegram and API using the client’s information, processes and permissions.',
+      es: 'Epoxi es un Agente como Servicio (AaaS) desarrollado con Google Gemini y un harness propio de orquestación. Opera Epoxiron mediante Telegram y API utilizando la información, los procesos y los permisos del cliente.',
+      en: 'Epoxi is an Agent as a Service (AaaS) built with Google Gemini and a custom orchestration harness. It operates Epoxiron through Telegram and API using the client’s information, processes and permissions.',
     },
   },
 ] as const satisfies ReadonlyArray<ServicePage>;

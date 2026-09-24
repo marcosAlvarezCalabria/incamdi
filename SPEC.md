@@ -65,7 +65,7 @@ La landing está publicada y lista para producción en `https://incamdi.com/`. E
 ### 3.4 Casos y producto terminados
 
 - [x] Epoxiron presentado mediante vídeo y captura de su software de albaranes.
-- [x] Epoxi presentado como agente propio construido sobre Hermes y adaptado a la información, procesos y permisos del cliente.
+- [x] Epoxi presentado como Agente como Servicio (AaaS) desarrollado con Google Gemini y un harness propio, adaptado a la información, procesos y permisos del cliente.
 - [x] Peru Inkas Travel presentado con imagen, enlace público y vídeo.
 - [x] Inkendar presentado como producto de Incamdi dentro de una ventana visual integrada en la rejilla.
 - [x] Enlace público a la landing de Inkendar: `https://inkendar.netlify.app/`.

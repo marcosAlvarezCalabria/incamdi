@@ -18,9 +18,9 @@ export const caseStudies = [
     slug: 'epoxiron', name: 'Epoxiron',
     kind: { es: 'Software a medida', en: 'Custom software' },
     status: { es: 'Privado · En uso diario', en: 'Private · Used daily' },
-    summary: { es: 'SaaS full-stack para la gestión diaria de un taller industrial.', en: 'Full-stack SaaS for the daily operation of an industrial workshop.' },
-    detail: { es: 'Centraliza albaranes, facturas, clientes y documentación en una interfaz construida alrededor del flujo real del equipo. La captura muestra el panel operativo que resume la jornada y da acceso a las tareas frecuentes.', en: 'It brings delivery notes, invoices, customers and documents into an interface built around the team’s real workflow. The screenshot shows the operational dashboard used to review the day and reach frequent tasks.' },
-    tags: [{ es: 'Full-stack', en: 'Full-stack' }, { es: 'SaaS', en: 'SaaS' }, { es: 'Operaciones', en: 'Operations' }],
+    summary: { es: 'SaaS full-stack para la gestión diaria de un taller industrial, conectado a un Agente como Servicio (AaaS).', en: 'Full-stack SaaS for the daily operation of an industrial workshop, connected to an Agent as a Service (AaaS).' },
+    detail: { es: 'Centraliza albaranes, facturas, clientes y documentación en una interfaz construida alrededor del flujo real del equipo. Epoxi, su Agente como Servicio, utiliza Google Gemini con un harness propio para operar el sistema mediante Telegram y API.', en: 'It brings delivery notes, invoices, customers and documents into an interface built around the team’s real workflow. Epoxi, its Agent as a Service, uses Google Gemini with a custom harness to operate the system through Telegram and API.' },
+    tags: [{ es: 'Full-stack', en: 'Full-stack' }, { es: 'SaaS', en: 'SaaS' }, { es: 'AaaS', en: 'AaaS' }],
     image: { src: '/assets/case-studies/epoxiron.webp', srcSmall: '/assets/case-studies/epoxiron-720.webp', width: 1600, height: 802, alt: { es: 'Panel real de gestión diaria del taller en Epoxiron.', en: 'Real daily workshop management dashboard in Epoxiron.' } },
   },
   {
